@@ -1,6 +1,13 @@
 import os
+
+from optimize import simple_grid_search
+
 os.environ['SSL_CERT_FILE'] = r"C:\certifi\cacert.pem"
 os.environ['REQUESTS_CA_BUNDLE'] = r"C:\certifi\cacert.pem"
+
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+
 import yfinance as yf
 import matplotlib.pyplot as plt
 
@@ -33,7 +40,14 @@ data = generate_signals(data)
 
 # --- 4. BACKTEST ---
 
-results = backtest(data)
+results = backtest(
+    data,
+    initial_capital=10_000,
+    stop_loss_pct=0.02,
+    take_profit_pct=0.05,
+    enable_trailing=True,
+)
+
 bt_df = results["df"]
 
 print("=== BACKTEST RESULTS ===")
@@ -111,3 +125,6 @@ plt.show()
 
 print("=== ML SAMPLE PREDICTIONS (last 10 rows) ===")
 print(bt_df[["Close", "RSI_14", "MACD", "MACD_SIGNAL", "ML_PRED_UP", "ML_PROBA_UP"]].tail(10))
+
+if __name__ == "__main__":
+    simple_grid_search("AAPL", "1y")
