@@ -1,0 +1,7 @@
+{
+    "rsi_buy": 50,
+    "rsi_sell": 55,
+    "stop_loss": 0.03,
+    "take_profit": 0.12,
+    "trailing": 0.03
+}
